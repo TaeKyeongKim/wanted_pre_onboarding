@@ -13,6 +13,10 @@
 		B7A927D828571F9A00731798 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A927D728571F9A00731798 /* ViewController.swift */; };
 		B7A927DD28571F9B00731798 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7A927DC28571F9B00731798 /* Assets.xcassets */; };
 		B7A927E028571F9B00731798 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7A927DE28571F9B00731798 /* LaunchScreen.storyboard */; };
+		B7A927E92857576C00731798 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A927E82857576C00731798 /* NetworkManager.swift */; };
+		B7A927EB2857578D00731798 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A927EA2857578D00731798 /* Endpoint.swift */; };
+		B7A927EF28575A5A00731798 /* weather_API.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7A927EE28575A5A00731798 /* weather_API.plist */; };
+		B7A927F12857818000731798 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A927F02857818000731798 /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		B7A927DC28571F9B00731798 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7A927DF28571F9B00731798 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7A927E128571F9B00731798 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7A927E82857576C00731798 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		B7A927EA2857578D00731798 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		B7A927EE28575A5A00731798 /* weather_API.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = weather_API.plist; sourceTree = "<group>"; };
+		B7A927F02857818000731798 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		D54112BB15343D4146A10C64 /* Pods-weather_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-weather_app.debug.xcconfig"; path = "Target Support Files/Pods-weather_app/Pods-weather_app.debug.xcconfig"; sourceTree = "<group>"; };
 		F386E4B0615EC2AE1CCC6875 /* Pods-weather_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-weather_app.release.xcconfig"; path = "Target Support Files/Pods-weather_app/Pods-weather_app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,14 +77,34 @@
 		B7A927D228571F9A00731798 /* weather_app */ = {
 			isa = PBXGroup;
 			children = (
+				B7A927EC2857579F00731798 /* Repository */,
 				B7A927D328571F9A00731798 /* AppDelegate.swift */,
 				B7A927D528571F9A00731798 /* SceneDelegate.swift */,
 				B7A927D728571F9A00731798 /* ViewController.swift */,
 				B7A927DC28571F9B00731798 /* Assets.xcassets */,
 				B7A927DE28571F9B00731798 /* LaunchScreen.storyboard */,
 				B7A927E128571F9B00731798 /* Info.plist */,
+				B7A927EE28575A5A00731798 /* weather_API.plist */,
 			);
 			path = weather_app;
+			sourceTree = "<group>";
+		};
+		B7A927EC2857579F00731798 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				B7A927ED285757B900731798 /* Network */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		B7A927ED285757B900731798 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B7A927F02857818000731798 /* NetworkError.swift */,
+				B7A927E82857576C00731798 /* NetworkManager.swift */,
+				B7A927EA2857578D00731798 /* Endpoint.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		F45F7191B1D644C2A9F1764A /* Pods */ = {
@@ -148,6 +176,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7A927EF28575A5A00731798 /* weather_API.plist in Resources */,
 				B7A927E028571F9B00731798 /* LaunchScreen.storyboard in Resources */,
 				B7A927DD28571F9B00731798 /* Assets.xcassets in Resources */,
 			);
@@ -202,9 +231,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7A927E92857576C00731798 /* NetworkManager.swift in Sources */,
 				B7A927D828571F9A00731798 /* ViewController.swift in Sources */,
 				B7A927D428571F9A00731798 /* AppDelegate.swift in Sources */,
+				B7A927F12857818000731798 /* NetworkError.swift in Sources */,
 				B7A927D628571F9A00731798 /* SceneDelegate.swift in Sources */,
+				B7A927EB2857578D00731798 /* Endpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
