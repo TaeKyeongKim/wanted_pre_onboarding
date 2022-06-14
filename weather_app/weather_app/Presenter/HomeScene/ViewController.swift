@@ -14,13 +14,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
         configureDisplay()
         bindData()
 
     }
 
     private func configureDisplay() {
+        setView()
         setCollectionView()
         setConstraints()
     }
@@ -32,18 +32,26 @@ class ViewController: UIViewController {
         }})
     }
 
+    private func setView() {
+        view.backgroundColor = .white
+        title = "Weather APP"
+    }
+
     private func setCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-        collectionView?.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView?.dataSource = self
-//        collectionView?.delegate = self
+        let flowLayout = UICollectionViewFlowLayout()
+        let collectionView =  UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.register(CityWeatherCell.self, forCellWithReuseIdentifier: CityWeatherCell.id)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.collectionView = collectionView
     }
 
     private func setConstraints() {
         guard let collectionView = collectionView else {return}
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -52,14 +60,18 @@ class ViewController: UIViewController {
 
 }
 
-// extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        <#code#>
-//    }
-//
-// }
+ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.cityWeather.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
+        return cell
+    }
+
+     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         return CGSize(width: view.frame.width, height: 70)
+     }
+ }
