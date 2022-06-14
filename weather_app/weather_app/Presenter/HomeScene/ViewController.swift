@@ -28,7 +28,9 @@ class ViewController: UIViewController {
     private func bindData() {
         viewModel.fetchWeatherData()
         viewModel.cityWeather.values.forEach({$0.bind { _ in
-            // print(data)
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
         }})
     }
 
@@ -68,6 +70,7 @@ class ViewController: UIViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
+        cell.configure(model: viewModel.cityWeather[viewModel.cities[indexPath.item]]?.value)
         return cell
     }
 
