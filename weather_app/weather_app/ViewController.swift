@@ -9,23 +9,44 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private var collectionView: UICollectionView?
+    private var viewModel = HomeViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
-        let na = NetworkManager()
-        let cities = ["Gongju", "gwangju", "Gumi", "Gunsan", "Daegu", "Daejeon", "Mokpo", "Busan", "Seosan", "Seoul", "Sokcho", "Suwon", "Suncheon",
-                      "Ulsan", "Iksan", "Jeonju", "Jeju", "City", "Cheonan", "Cheongju", "ChunCheon"]
+        configureDisplay()
+        viewModel.fetchWeatherData()
 
-        cities.forEach({
-            na.loadWeather(city: $0) { result in
-                switch result {
-                case .success(let data):
-                    print(data)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        })
+        viewModel.cityWeather.values.forEach({$0.bind { _ in
+//            print(data)
+        }})
+
+    }
+
+    private func configureDisplay() {
+        setCollectionView()
+        setConstraints()
+    }
+
+    private func bindDataSource() {
+
+    }
+
+    private func setCollectionView() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        collectionView?.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func setConstraints() {
+        guard let collectionView = collectionView else {return}
+        view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
 }

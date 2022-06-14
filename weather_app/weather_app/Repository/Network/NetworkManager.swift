@@ -7,13 +7,12 @@
 
 import Foundation
 
-
 class NetworkManager {
 
-    func loadWeather(city: String, completion: @escaping (Result<TestDTO, NetworkError>) -> Void) {
+    func loadWeather(city: String, completion: @escaping (Result<WeatherDTO, NetworkError>) -> Void) {
 
         let url = EndPoint.weather(for: city).url
-
+        print(url)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(.transportError(error)))
@@ -32,7 +31,7 @@ class NetworkManager {
 
             do {
                 let decoder = JSONDecoder()
-                let value = try decoder.decode(TestDTO.self, from: data)
+                let value = try decoder.decode(WeatherDTO.self, from: data)
                 completion(.success(value))
             } catch {
                 completion(.failure(.decodingError(error)))
