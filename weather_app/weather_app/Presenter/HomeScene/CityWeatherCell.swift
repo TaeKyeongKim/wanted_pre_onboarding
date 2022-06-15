@@ -7,6 +7,90 @@
 
 import UIKit
 
-class CityWeatherCell: UICollectionViewCell {
+final class CityWeatherCell: UICollectionViewCell {
+
+    static let id = "CityWeatherCell"
+
+    private var imageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(systemName: "multiply")
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 10
+        imageView.layer.borderWidth = 1
+        imageView.image = image
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    private var cityName: UILabel = {
+        let label  = UILabel()
+        label.font = .smallBold
+        label.text = "testtest"
+        return label
+    }()
+
+    private var temperature: UILabel = {
+        let label = UILabel()
+        label.font = .smallRegular
+        label.textColor = .systemGray3
+        label.text = "testtest"
+        return label
+    }()
+
+    private var humidity: UILabel = {
+        let label = UILabel()
+        label.font = .smallRegular
+        label.text = "testtest"
+        label.textColor = .systemGray3
+        return label
+    }()
+
+    private lazy var informationStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [temperature, humidity])
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private lazy var informationContainerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [cityName, informationStackView])
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureDisplay()
+        configureConstraints()
+    }
+
+    private func configureDisplay() {
+        contentView.addSubview(imageView)
+        contentView.addSubview(informationContainerStackView)
+    }
+
+    private func configureConstraints() {
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -contentView.frame.width/1.4),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            informationContainerStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
+            informationContainerStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+        ])
+    }
+
+    func configure(model: WeatherSummary?) {
+        cityName.text = "\(model?.cityName ?? "")"
+        temperature.text = "현재기온: \(model?.temperature ?? 0.0)"
+        humidity.text = "현재습도: \(model?.humidity ?? 0)"
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
 }
