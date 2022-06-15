@@ -84,6 +84,7 @@ final class CityWeatherCell: UICollectionViewCell {
     }
 
     func configure(model: WeatherSummary?) {
+//        imageView.image 
         cityName.text = "\(model?.cityName ?? "")"
         temperature.text = "현재기온: \(model?.temperature ?? 0.0)"
         humidity.text = "현재습도: \(model?.humidity ?? 0)"
