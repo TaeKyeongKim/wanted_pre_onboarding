@@ -12,12 +12,10 @@ final class CityWeatherCell: UICollectionViewCell {
     static let id = "CityWeatherCell"
 
     private var imageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(systemName: "multiply")
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         imageView.contentMode = .scaleToFill
         imageView.layer.cornerRadius = 10
         imageView.layer.borderWidth = 1
-        imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -25,7 +23,6 @@ final class CityWeatherCell: UICollectionViewCell {
     private var cityName: UILabel = {
         let label  = UILabel()
         label.font = .smallBold
-        label.text = "testtest"
         return label
     }()
 
@@ -33,14 +30,12 @@ final class CityWeatherCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .smallRegular
         label.textColor = .systemGray3
-        label.text = "testtest"
         return label
     }()
 
     private var humidity: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.text = "testtest"
         label.textColor = .systemGray3
         return label
     }()
@@ -84,10 +79,14 @@ final class CityWeatherCell: UICollectionViewCell {
     }
 
     func configure(model: WeatherSummary?) {
-//        imageView.image 
-        cityName.text = "\(model?.cityName ?? "")"
-        temperature.text = "현재기온: \(model?.temperature ?? 0.0)"
-        humidity.text = "현재습도: \(model?.humidity ?? 0)"
+        guard let model = model else {return}
+        cityName.text = "\(model.cityName)"
+        temperature.text = "현재기온: \(model.temperature)"
+        humidity.text = "현재습도: \(model.humidity)"
+    }
+
+    func configureImage(_ data: Data) {
+        imageView.image = UIImage(data: data)
     }
 
     required init?(coder: NSCoder) {

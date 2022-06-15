@@ -42,7 +42,6 @@ class NetworkManager {
     func fetchImage(icon: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
 
         let url = URL(string: "http://openweathermap.org/img/wn/\(icon)@2x.png")!
-        print(url)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(.transportError(error)))
