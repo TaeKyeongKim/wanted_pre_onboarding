@@ -12,7 +12,6 @@ class NetworkManager {
     func loadWeather(city: String, completion: @escaping (Result<WeatherDTO, NetworkError>) -> Void) {
 
         let url = EndPoint.weather(for: city).url
-        print(url)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(.transportError(error)))
@@ -40,4 +39,28 @@ class NetworkManager {
         }.resume()
     }
 
+    func fetchImage(icon: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+
+        let url = URL(string: "http://openweathermap.org/img/wn/\(icon)@2x.png")!
+        print(url)
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                completion(.failure(.transportError(error)))
+                return
+            }
+
+            if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
+                completion(.failure(.serverError(statusCode: response.statusCode)))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+
+            completion(.success(data))
+            return
+        }.resume()
+    }
 }

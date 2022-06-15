@@ -38,7 +38,18 @@ class HomeViewModel {
                 }
             }
         }
+    }
 
+    func fetchIconImage(icon: String) {
+        networkManager.fetchImage(icon: icon) { result in
+            switch result {
+            case .success(let data) :
+                print(data)
+            case .failure(let error) :
+                print(error)
+                break
+            }
+        }
     }
 
 }

@@ -70,6 +70,11 @@ class ViewController: UIViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
+
+        let model = viewModel.cityWeather[viewModel.cities[indexPath.item]]?.value
+        print(model?.icon)
+        viewModel.fetchIconImage(icon: model?.icon ?? "00")
+
         cell.configure(model: viewModel.cityWeather[viewModel.cities[indexPath.item]]?.value)
         return cell
     }
