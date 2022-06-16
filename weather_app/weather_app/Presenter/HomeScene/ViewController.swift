@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private var collectionView: UICollectionView?
+    private var homeCollectionView: UICollectionView?
     private var viewModel = HomeViewModel()
 
     override func viewDidLoad() {
@@ -26,12 +26,14 @@ class ViewController: UIViewController {
     }
 
     private func bindData() {
-        viewModel.fetchWeatherData()
-        viewModel.cityWeather.values.forEach({$0.bind { _ in
+        viewModel.cityWeather.values.forEach({$0.bind { [weak self] data in
+            guard let data = data else {return}
             DispatchQueue.main.async {
-                self.collectionView?.reloadData()
+                guard let index = self?.viewModel.cities.firstIndex(of: data.cityName) else {return}
+                self?.homeCollectionView?.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
         }})
+        viewModel.fetchWeatherData()
     }
 
     private func setView() {
@@ -46,11 +48,11 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.collectionView = collectionView
+        self.homeCollectionView = collectionView
     }
 
     private func setConstraints() {
-        guard let collectionView = collectionView else {return}
+        guard let collectionView = homeCollectionView else {return}
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -69,13 +71,17 @@ class ViewController: UIViewController {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
 
-        let model = viewModel.cityWeather[viewModel.cities[indexPath.item]]?.value
-        print(model?.icon)
-        viewModel.fetchIconImage(icon: model?.icon ?? "00")
+        guard let cell = homeCollectionView?.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
 
-        cell.configure(model: viewModel.cityWeather[viewModel.cities[indexPath.item]]?.value)
+        if let model = viewModel[indexPath] {
+            viewModel.fetchIconImage(icon: model.icon) { data in
+                DispatchQueue.main.async {
+                    cell.configureImage(data)
+                }
+            }
+            cell.configure(model: model)
+        }
         return cell
     }
 

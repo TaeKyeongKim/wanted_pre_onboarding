@@ -7,11 +7,12 @@
 
 import Foundation
 
-class NetworkManager {
+struct NetworkManager {
 
-    func loadWeather(city: String, completion: @escaping (Result<WeatherDTO, NetworkError>) -> Void) {
+    static func request<T: Decodable>(endPoint: EndPoint, completion: @escaping (Result<T, NetworkError>) -> Void) {
 
-        let url = EndPoint.weather(for: city).url
+        guard let url = endPoint.url else {return}
+
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(.transportError(error)))
@@ -28,39 +29,21 @@ class NetworkManager {
                 return
             }
 
-            do {
-                let decoder = JSONDecoder()
-                let value = try decoder.decode(WeatherDTO.self, from: data)
-                completion(.success(value))
-            } catch {
-                completion(.failure(.decodingError(error)))
+            if T.self == Data.self {
+                completion(.success(data as! T))
+            } else {
+                do {
+                    let decoder = JSONDecoder()
+
+                    let value = try decoder.decode(T.self, from: data)
+
+                    completion(.success(value))
+                } catch {
+                    completion(.failure(.decodingError(error)))
+                }
             }
 
         }.resume()
     }
 
-    func fetchImage(icon: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
-
-        let url = URL(string: "http://openweathermap.org/img/wn/\(icon)@2x.png")!
-        print(url)
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                completion(.failure(.transportError(error)))
-                return
-            }
-
-            if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
-                completion(.failure(.serverError(statusCode: response.statusCode)))
-                return
-            }
-
-            guard let data = data else {
-                completion(.failure(.noData))
-                return
-            }
-
-            completion(.success(data))
-            return
-        }.resume()
-    }
 }
