@@ -8,12 +8,9 @@
 import Foundation
 
 class HomeViewModel {
-    let cities = ["Gongju", "gwangju", "Gumi", "Gunsan", "Daegu", "Daejeon", "Mokpo", "Busan", "Seosan", "Seoul", "Sokcho", "Suwon", "Suncheon",
-                  "Ulsan", "Iksan", "Jeonju", "Jeju", "Cheonan", "Cheongju", "ChunCheon"]
 
-    private let networkManager = NetworkManager()
+    let cities = ["Gongju", "Gwangju", "Gumi", "Gunsan", "Daegu", "Daejeon", "Mokpo", "Busan", "Seosan City", "Seoul", "Sokcho", "Suwon", "Suncheon", "Ulsan", "Iksan", "Jeonju", "Jeju", "Cheonan", "Cheongju", "ChunCheon"]
     private var cache = NSCache<NSString, NSData>()
-    private var fileManager = FileManager()
     var cityWeather: [String: Observable<WeatherSummary?>] = [:]
 
     init() {
@@ -29,11 +26,11 @@ class HomeViewModel {
     }
 
     func fetchWeatherData() {
-
         for key in cityWeather.keys {
-            networkManager.loadWeather(city: key) { [weak self] result in
+            let endPoint = EndPoint(urlInformation: .weather(city: key))
 
-                switch result {
+            NetworkManager.request(endPoint: endPoint) { [weak self] (response: Result<WeatherDTO, NetworkError>) in
+                switch response {
                 case .success(let data):
                     let detail = WeatherDetail(feelsLike: data.main.feelsLike, tempMin: data.main.tempMin, tempMax: data.main.tempMax, pressure: data.main.pressure, wind: data.wind)
 
@@ -41,7 +38,8 @@ class HomeViewModel {
 
                     self?.cityWeather[key]?.value = summary
 
-                case .failure:
+                case .failure(let error):
+                    print(error)
                     self?.cityWeather[key]?.value = nil
                 }
             }
@@ -51,31 +49,19 @@ class HomeViewModel {
     func fetchIconImage(icon: String?, completion: @escaping (Data) -> Void) {
 
         guard let icon = icon else {return}
-        print(icon)
+
         if let imageData = cache.object(forKey: icon as NSString) {
             completion(imageData as Data)
             return
         }
 
-        // Disk Cache
-//        guard let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-//            return
-//        }
-//        var filePath = URL(fileURLWithPath: path)
-//        filePath.appendPathComponent(icon)
-//
-//        if !fileManager.fileExists(atPath: filePath.path) {
-//            fileManager.createFile(atPath: filePath.path,
-//                                   contents: cache.object(forKey: icon as NSString)?.base64EncodedData(),
-//                                   attributes: nil)
-//        }
+        let endPoint = EndPoint(urlInformation: .image(name: icon))
 
-        networkManager.fetchImage(icon: icon) { [weak self] result in
-            switch result {
+        NetworkManager.request(endPoint: endPoint) { [weak self] (response: Result<Data, NetworkError>) in
+            switch response {
             case .success(let data):
                 self?.cache.setObject(data as NSData, forKey: icon as NSString)
                 completion(data)
-                return
             case .failure(let error):
                 print(error)
             }
