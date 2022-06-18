@@ -136,14 +136,27 @@
   - ATS 에러 
   
   > 해결
-  - 주어진 모든 도시의 날씨 정보가 완료될시에 VC 에게 알려주는 방법은 안전하지 않다고 생각했습니다. (도시 리스트중 하나의 호출만이라도 실패할시 ViewController 에 정보전달 불가)
-  - 따라서 `HomeViewModel` 에 딕셔너리 형태로 `cityWeather: [도시이름: Observable<날씨데이터?>]` 를 선언해주고, 각각의 key 마다 API 호출을 할수 있도록 진행하였습니다. 
+  [여기서 확인 할수 있습니다](https://github.com/TaeKyeongKim/wanted_pre_onboarding/issues/8)
 
 </details>
 <details>
   <summary> 5. Detail 화면 구현  </summary>
-</details>
+  
+   > 관련 오브젝트: `DetailViewModel`, `DetailViewController`, `DetailViewModel`
 
+  ### 목표
+  
+  - `HomeViewController` 에서 특정 도시 날씨를 사용자가 선택할시, detail 정보를 보여주는 `DeatailView` 를 화면에 띄운다. 
+  
+  ### 고민과 해결 
+  
+  > 고민 1.0
+  - 어떻게 해당 도시의 날씨 정보를 `HomeViewController` 에서 부터 전달받을까 고민하였습니다.  
+  
+  > 해결 
+  - `HomeViewController` 에서 `DetailViewController` 를 생성할때 initializer 의 매개변수로 해당 `weatherSummary` 데이터를 넘겨주는 방식으로 구현하였습니다.
+
+</details>
 
 
 ## 결과 화면 
