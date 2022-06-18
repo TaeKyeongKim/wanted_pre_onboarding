@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     private var homeCollectionView: UICollectionView?
     private var viewModel = HomeViewModel()
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 
 }
 
- extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.cityWeather.count
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let cell = homeCollectionView?.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
 
         if let model = viewModel[indexPath] {
             viewModel.fetchIconImage(icon: model.icon) { data in
@@ -89,3 +89,13 @@ class ViewController: UIViewController {
          return CGSize(width: view.frame.width, height: 70)
      }
  }
+
+extension HomeViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedCity = viewModel[indexPath] else {return}
+        let ChildVC = DetailViewController(weatherData: selectedCity)
+        present(ChildVC, animated: true)
+
+    }
+}

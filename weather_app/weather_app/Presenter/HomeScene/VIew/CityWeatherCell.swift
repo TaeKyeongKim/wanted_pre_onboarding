@@ -11,7 +11,7 @@ final class CityWeatherCell: UICollectionViewCell {
 
     static let id = "CityWeatherCell"
 
-    private var imageView: UIImageView = {
+    private var weatherImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         imageView.contentMode = .scaleToFill
         imageView.layer.cornerRadius = 10
@@ -63,18 +63,18 @@ final class CityWeatherCell: UICollectionViewCell {
     }
 
     private func configureDisplay() {
-        contentView.addSubview(imageView)
+        contentView.addSubview(weatherImageView)
         contentView.addSubview(informationContainerStackView)
     }
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -contentView.frame.width/1.4),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            informationContainerStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            informationContainerStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+            weatherImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            weatherImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            weatherImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -contentView.frame.width/1.4),
+            weatherImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            informationContainerStackView.leadingAnchor.constraint(equalTo: weatherImageView.trailingAnchor, constant: 16),
+            informationContainerStackView.centerYAnchor.constraint(equalTo: weatherImageView.centerYAnchor)
         ])
     }
 
@@ -86,7 +86,7 @@ final class CityWeatherCell: UICollectionViewCell {
     }
 
     func configureImage(_ data: Data) {
-        imageView.image = UIImage(data: data)
+        weatherImageView.image = UIImage(data: data)
     }
 
     required init?(coder: NSCoder) {
