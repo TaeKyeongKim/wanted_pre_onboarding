@@ -38,7 +38,6 @@ class HomeViewModel {
                     self?.cityWeather[key]?.value = summary
 
                 case .failure(let error):
-                    print(error)
                     self?.cityWeather[key]?.value = nil
                 }
             }

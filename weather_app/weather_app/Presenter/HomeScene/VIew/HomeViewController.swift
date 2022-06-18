@@ -77,6 +77,7 @@ class HomeViewController: UIViewController {
 
         if let model = viewModel[indexPath] {
             ImageCacheManager.shared.fetchIconImage(icon: model.icon) { data in
+                guard let data = data else {return}
                 DispatchQueue.main.async {
                     cell.configureImage(data)
                 }

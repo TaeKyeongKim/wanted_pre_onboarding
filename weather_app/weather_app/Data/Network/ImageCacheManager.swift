@@ -15,7 +15,7 @@ final class ImageCacheManager {
 
     private var cache = NSCache<NSString, NSData>()
 
-    func fetchIconImage(icon: String?, completion: @escaping (Data) -> Void) {
+    func fetchIconImage(icon: String?, completion: @escaping (Data?) -> Void) {
 
         guard let icon = icon else {return}
 
@@ -31,8 +31,8 @@ final class ImageCacheManager {
             case .success(let data):
                 self?.cache.setObject(data as NSData, forKey: icon as NSString)
                 completion(data)
-            case .failure(let error):
-                print(error)
+            case .failure:
+                completion(nil)
             }
         }
     }

@@ -41,6 +41,7 @@ class DetailViewController: UIViewController {
             let icon = self?.viewModel?.specificWeather.value?.icon
 
             ImageCacheManager.shared.fetchIconImage(icon: icon) { data in
+                guard let data = data else {return}
                 DispatchQueue.main.async {
                     self?.detailView?.configureImage(data: data)
                 }
