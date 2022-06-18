@@ -7,8 +7,9 @@
 >
 > [프로젝트 요구사항 링크](https://yagomacademy.notion.site/4eb46f9eb3a442efb9d0856b72f15b74)
 
-## 프로젝트 다운로드및 API Key 설정 방법 
-
+## 프로젝트 실행 시 API Key 설정 방법 
+- 프로젝트를 다운받고 `weather_API.plist` 의 `API_KEY` 의 값에 자신의 api key 값을 넣어주세요!
+<img width="984" alt="image" src="https://user-images.githubusercontent.com/36659877/174437593-84e5c8ae-6803-48e9-9345-907b6077dd3d.png">
 
 ## 프로젝트 OverView 
 ### 설계: 
