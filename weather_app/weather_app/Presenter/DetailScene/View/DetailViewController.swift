@@ -24,6 +24,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDisplay()
+        bindData()
     }
 
     private func configureDisplay() {
@@ -35,4 +36,20 @@ class DetailViewController: UIViewController {
         view = detailView
     }
 
+    private func bindData() {
+        viewModel?.specificWeather.bind(listener: { [weak self] model in
+            let icon = self?.viewModel?.specificWeather.value?.icon
+
+            ImageCacheManager.shared.fetchIconImage(icon: icon) { data in
+                DispatchQueue.main.async {
+                    self?.detailView?.configureImage(data: data)
+                }
+            }
+
+            DispatchQueue.main.async {
+                self?.detailView?.configureInformation(model: model)
+            }
+
+        })
+    }
 }

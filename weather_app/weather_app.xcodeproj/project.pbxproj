@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B814C051FD46D6416FB877C /* Pods_weather_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 965C7A420F9425F30DCBA040 /* Pods_weather_app.framework */; };
+		B70FC881285DAC0C006D750F /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70FC880285DAC0C006D750F /* ImageCacheManager.swift */; };
 		B73BD6742858F52100796F22 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73BD6692858F52100796F22 /* HomeViewController.swift */; };
 		B73BD6752858F52100796F22 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73BD66A2858F52100796F22 /* HomeViewModel.swift */; };
 		B73BD6762858F52100796F22 /* CityWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73BD66B2858F52100796F22 /* CityWeatherCell.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		965C7A420F9425F30DCBA040 /* Pods_weather_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_weather_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B70FC880285DAC0C006D750F /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		B73BD6692858F52100796F22 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B73BD66A2858F52100796F22 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B73BD66B2858F52100796F22 /* CityWeatherCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityWeatherCell.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				B73BD6732858F52100796F22 /* Endpoint.swift */,
 				B7A836FE285B9A6300A06C77 /* URLComponent.swift */,
 				B73BD6702858F52100796F22 /* WeatherDTO.swift */,
+				B70FC880285DAC0C006D750F /* ImageCacheManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B70FC881285DAC0C006D750F /* ImageCacheManager.swift in Sources */,
 				B7A8370C285BAF2600A06C77 /* DetailViewModel.swift in Sources */,
 				B73BD67A2858F52100796F22 /* NetworkError.swift in Sources */,
 				B73BD6752858F52100796F22 /* HomeViewModel.swift in Sources */,

@@ -50,8 +50,8 @@ final class DetailView: UIView {
     private lazy var bannerContainerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [weatherImageView, bannerInformationStackView])
         stackView.axis = .horizontal
+        stackView.backgroundColor = .white
         stackView.spacing = 16
-        stackView.layer.borderWidth = 1
         stackView.layer.cornerRadius = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -133,7 +133,6 @@ final class DetailView: UIView {
     private var humidityValueLabel: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.textAlignment = .center
         label.text = "test"
         return label
     }()
@@ -148,7 +147,7 @@ final class DetailView: UIView {
     private lazy var humidityContainerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [humidityStackView, humidityValueLabel])
         stackView.axis = .vertical
-        stackView.spacing = 4
+        stackView.backgroundColor = .white
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -169,7 +168,6 @@ final class DetailView: UIView {
     private var pressureValueLabel: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.textAlignment = .center
         label.text = "test"
 
         return label
@@ -185,7 +183,7 @@ final class DetailView: UIView {
     private lazy var pressureContainerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [pressureStackView, pressureValueLabel])
         stackView.axis = .vertical
-        stackView.spacing = 4
+        stackView.backgroundColor = .white
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -206,7 +204,7 @@ final class DetailView: UIView {
     private var windValueLabel: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.textAlignment = .center
+        label.numberOfLines = 0
         label.text = "test: 132435"
         return label
     }()
@@ -221,7 +219,7 @@ final class DetailView: UIView {
     private lazy var windContainerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [windStackView, windValueLabel])
         stackView.axis = .vertical
-        stackView.spacing = 4
+        stackView.backgroundColor = .white
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -230,9 +228,19 @@ final class DetailView: UIView {
         let stackView = UIStackView(arrangedSubviews: [humidityContainerStackView,
                                                        pressureContainerStackView, windContainerStackView])
         stackView.axis = .horizontal
-        stackView.spacing = 16
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+
+    private lazy var informationContainerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 16
+        view.backgroundColor = .white
+        view.addSubview(temperatureContainerStackView)
+        view.addSubview(detailContainerStackView)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     override init(frame: CGRect) {
@@ -252,8 +260,9 @@ final class DetailView: UIView {
 
     private func configureConstraints() {
         self.addSubview(bannerContainerStackView)
-        self.addSubview(temperatureContainerStackView)
-        self.addSubview(detailContainerStackView)
+        self.addSubview(informationContainerView)
+//        self.addSubview(temperatureContainerStackView)
+//        self.addSubview(detailContainerStackView)
 
         NSLayoutConstraint.activate([
             weatherImageView.widthAnchor.constraint(equalToConstant: CGFloat(100)),
@@ -270,20 +279,45 @@ final class DetailView: UIView {
             windImageView.widthAnchor.constraint(equalToConstant: CGFloat(20)),
             windImageView.heightAnchor.constraint(equalToConstant: CGFloat(20)),
 
-            bannerContainerStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70),
-            bannerContainerStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
-            bannerContainerStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 150),
+            bannerContainerStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            bannerContainerStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            bannerContainerStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 50),
             bannerContainerStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 
-            temperatureContainerStackView.leadingAnchor.constraint(equalTo: bannerContainerStackView.leadingAnchor),
-            temperatureContainerStackView.trailingAnchor.constraint(equalTo: bannerContainerStackView.trailingAnchor),
-            temperatureContainerStackView.topAnchor.constraint(equalTo: bannerContainerStackView.bottomAnchor, constant: 50),
-            temperatureContainerStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            informationContainerView.leadingAnchor.constraint(equalTo: bannerContainerStackView.leadingAnchor),
+            informationContainerView.trailingAnchor.constraint(equalTo: bannerContainerStackView.trailingAnchor),
+            informationContainerView.topAnchor.constraint(equalTo: bannerContainerStackView.bottomAnchor, constant: 16),
+            informationContainerView.bottomAnchor.constraint(equalTo: detailContainerStackView.bottomAnchor, constant: 16),
+            informationContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 
-            detailContainerStackView.leadingAnchor.constraint(equalTo: temperatureContainerStackView.leadingAnchor),
-            detailContainerStackView.trailingAnchor.constraint(equalTo: temperatureContainerStackView.trailingAnchor),
-            detailContainerStackView.topAnchor.constraint(equalTo: temperatureContainerStackView.bottomAnchor, constant: 50),
-            detailContainerStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            temperatureContainerStackView.leadingAnchor.constraint(equalTo: informationContainerView.leadingAnchor, constant: 16),
+            temperatureContainerStackView.trailingAnchor.constraint(equalTo: informationContainerView.trailingAnchor, constant: -16),
+            temperatureContainerStackView.topAnchor.constraint(equalTo: informationContainerView.topAnchor, constant: 16),
+            temperatureContainerStackView.centerXAnchor.constraint(equalTo: informationContainerView.centerXAnchor),
+
+            detailContainerStackView.leadingAnchor.constraint(equalTo: informationContainerView.leadingAnchor, constant: 16),
+            detailContainerStackView.trailingAnchor.constraint(equalTo: informationContainerView.trailingAnchor, constant: -16),
+            detailContainerStackView.topAnchor.constraint(equalTo: temperatureContainerStackView.bottomAnchor, constant: 30),
+            detailContainerStackView.centerXAnchor.constraint(equalTo: informationContainerView.centerXAnchor)
         ])
     }
+
+    func configureInformation(model: WeatherSummary?) {
+        guard let model = model else {return}
+
+        cityNameLabel.text = model.cityName
+        weatherDescriptionLabel.text = model.weather
+        currentTemperatureLabel.text = "현재 기온 \(model.temperature.rounded())°C"
+        apparentTemperatureLabel.text = "체감온도: \(model.detail.feelsLike.rounded())°C"
+        minTemperatureLabel.text = "최저온도: \(model.detail.tempMin.rounded())°C"
+        maxTemperatureLabel.text = "최고온도: \(model.detail.tempMax.rounded())°C"
+        pressureValueLabel.text = "\(model.detail.pressure)pHa"
+        humidityValueLabel.text = "\(model.humidity)%"
+        windValueLabel.text = "\(model.detail.wind.speed) m/s \n\(model.detail.wind.deg)°"
+    }
+
+    func configureImage(data: Data) {
+        weatherImageView.image = UIImage(data: data)
+    }
+
 }

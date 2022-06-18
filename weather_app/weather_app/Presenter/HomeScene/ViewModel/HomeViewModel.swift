@@ -10,7 +10,6 @@ import Foundation
 class HomeViewModel {
 
     let cities = ["Gongju", "Gwangju", "Gumi", "Gunsan", "Daegu", "Daejeon", "Mokpo", "Busan", "Seosan City", "Seoul", "Sokcho", "Suwon", "Suncheon", "Ulsan", "Iksan", "Jeonju", "Jeju", "Cheonan", "Cheongju", "ChunCheon"]
-    private var cache = NSCache<NSString, NSData>()
     var cityWeather: [String: Observable<WeatherSummary?>] = [:]
 
     init() {
@@ -45,27 +44,4 @@ class HomeViewModel {
             }
         }
     }
-
-    func fetchIconImage(icon: String?, completion: @escaping (Data) -> Void) {
-
-        guard let icon = icon else {return}
-
-        if let imageData = cache.object(forKey: icon as NSString) {
-            completion(imageData as Data)
-            return
-        }
-
-        let endPoint = EndPoint(urlInformation: .image(name: icon))
-
-        NetworkManager.request(endPoint: endPoint) { [weak self] (response: Result<Data, NetworkError>) in
-            switch response {
-            case .success(let data):
-                self?.cache.setObject(data as NSData, forKey: icon as NSString)
-                completion(data)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-
 }

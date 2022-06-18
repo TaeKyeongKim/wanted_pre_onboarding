@@ -37,7 +37,7 @@ class HomeViewController: UIViewController {
     }
 
     private func setView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .secondarySystemBackground
         title = "Weather APP"
     }
 
@@ -48,6 +48,7 @@ class HomeViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .secondarySystemBackground
         self.homeCollectionView = collectionView
     }
 
@@ -55,7 +56,7 @@ class HomeViewController: UIViewController {
         guard let collectionView = homeCollectionView else {return}
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -75,7 +76,7 @@ class HomeViewController: UIViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
 
         if let model = viewModel[indexPath] {
-            viewModel.fetchIconImage(icon: model.icon) { data in
+            ImageCacheManager.shared.fetchIconImage(icon: model.icon) { data in
                 DispatchQueue.main.async {
                     cell.configureImage(data)
                 }
@@ -86,7 +87,7 @@ class HomeViewController: UIViewController {
     }
 
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         return CGSize(width: view.frame.width, height: 70)
+         return CGSize(width: view.frame.width - 16, height: 70)
      }
  }
 

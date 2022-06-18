@@ -13,7 +13,6 @@ class DetailViewModel {
 
     init(data: WeatherSummary) {
         self.specificWeather.value = data
-
     }
 
 }
