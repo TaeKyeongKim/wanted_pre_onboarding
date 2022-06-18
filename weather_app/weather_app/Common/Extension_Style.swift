@@ -10,15 +10,15 @@ import UIKit
 extension UIFont {
 
     static var largeRegular: UIFont {
-        return UIFont.systemFont(ofSize: 34, weight: .regular)
+        return UIFont.systemFont(ofSize: 25, weight: .regular)
     }
 
     static var mediumRegular: UIFont {
-        return UIFont.systemFont(ofSize: 22, weight: .medium)
+        return UIFont.systemFont(ofSize: 17, weight: .medium)
     }
 
     static var smallRegular: UIFont {
-        return UIFont.systemFont(ofSize: 17, weight: .regular)
+        return UIFont.systemFont(ofSize: 13, weight: .regular)
     }
 
     static var largeBold: UIFont {

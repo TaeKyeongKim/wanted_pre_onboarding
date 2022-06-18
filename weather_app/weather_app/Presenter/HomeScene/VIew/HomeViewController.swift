@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     private var homeCollectionView: UICollectionView?
     private var viewModel = HomeViewModel()
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     }
 
     private func setView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .secondarySystemBackground
         title = "Weather APP"
     }
 
@@ -48,6 +48,7 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .secondarySystemBackground
         self.homeCollectionView = collectionView
     }
 
@@ -55,7 +56,7 @@ class ViewController: UIViewController {
         guard let collectionView = homeCollectionView else {return}
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
 
 }
 
- extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.cityWeather.count
@@ -72,10 +73,10 @@ class ViewController: UIViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let cell = homeCollectionView?.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityWeatherCell.id, for: indexPath) as? CityWeatherCell else {return UICollectionViewCell()}
 
         if let model = viewModel[indexPath] {
-            viewModel.fetchIconImage(icon: model.icon) { data in
+            ImageCacheManager.shared.fetchIconImage(icon: model.icon) { data in
                 DispatchQueue.main.async {
                     cell.configureImage(data)
                 }
@@ -86,6 +87,16 @@ class ViewController: UIViewController {
     }
 
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         return CGSize(width: view.frame.width, height: 70)
+         return CGSize(width: view.frame.width - 16, height: 70)
      }
  }
+
+extension HomeViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedCity = viewModel[indexPath] else {return}
+        let ChildVC = DetailViewController(weatherData: selectedCity)
+        present(ChildVC, animated: true)
+
+    }
+}

@@ -11,11 +11,9 @@ final class CityWeatherCell: UICollectionViewCell {
 
     static let id = "CityWeatherCell"
 
-    private var imageView: UIImageView = {
+    private var weatherImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         imageView.contentMode = .scaleToFill
-        imageView.layer.cornerRadius = 10
-        imageView.layer.borderWidth = 1
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -29,14 +27,13 @@ final class CityWeatherCell: UICollectionViewCell {
     private var temperature: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.textColor = .systemGray3
+
         return label
     }()
 
     private var humidity: UILabel = {
         let label = UILabel()
         label.font = .smallRegular
-        label.textColor = .systemGray3
         return label
     }()
 
@@ -63,30 +60,32 @@ final class CityWeatherCell: UICollectionViewCell {
     }
 
     private func configureDisplay() {
-        contentView.addSubview(imageView)
+        contentView.layer.cornerRadius = 16
+        contentView.backgroundColor = .white
+        contentView.addSubview(weatherImageView)
         contentView.addSubview(informationContainerStackView)
     }
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -contentView.frame.width/1.4),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            informationContainerStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            informationContainerStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+            weatherImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            weatherImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            weatherImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -contentView.frame.width/1.3),
+            weatherImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            informationContainerStackView.leadingAnchor.constraint(equalTo: weatherImageView.trailingAnchor, constant: 16),
+            informationContainerStackView.centerYAnchor.constraint(equalTo: weatherImageView.centerYAnchor)
         ])
     }
 
     func configure(model: WeatherSummary?) {
         guard let model = model else {return}
         cityName.text = "\(model.cityName)"
-        temperature.text = "현재기온: \(model.temperature)"
-        humidity.text = "현재습도: \(model.humidity)"
+        temperature.text = "현재기온: \(model.temperature)°C"
+        humidity.text = "현재습도: \(model.humidity)%"
     }
 
     func configureImage(_ data: Data) {
-        imageView.image = UIImage(data: data)
+        weatherImageView.image = UIImage(data: data)
     }
 
     required init?(coder: NSCoder) {
